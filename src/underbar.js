@@ -97,12 +97,14 @@
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
-    this.filter(collection, function () {
-      return !test.apply(this, arguments)
-    });
+    function untest () {
+      return !test.apply(this, arguments);
+    }
+   return _.filter(collection, untest);
 
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+    // 
   };
 
   // Produce a duplicate-free version of the array.

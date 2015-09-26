@@ -58,11 +58,11 @@
   _.each = function(collection, iterator) {
     if (Array.isArray(collection) === true) {
       for (var i = 0; i < collection.length; i++) {
-        iterator(_.identity(collection[i]));
+        iterator(collection[i], i, collection);
       }
     } else {                                                                
       for (var key in collection) {
-        iterator(_.identity(collection[key]));
+        iterator(collection[key], key, collection);
       }
     }
   };

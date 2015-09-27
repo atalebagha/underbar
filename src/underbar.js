@@ -221,11 +221,20 @@
     if (collection.length === 0) {
       return false;
     }
+
     function tester() {
-      return iterator.call(this, arguments);
+      if (iterator !== undefined) {
+        return !iterator.call(this, arguments[0]);
+      } else {
+        if (arguments[0]) {
+          return false;
+        } else {
+          return true;
+        }
+      }
     }
 
-    return this.every(collection, tester, false);
+    return !this.every(collection, tester, false);
     // TIP: There's a very clever way to re-use every() here.
     // 
   };

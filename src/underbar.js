@@ -213,10 +213,21 @@
     return _.reduce(collection, truth, true);// TIP: Try re-using reduce() here.
   };
 
+
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
+   
+    if (collection.length === 0) {
+      return false;
+    }
+    function tester() {
+      return iterator.call(this, arguments);
+    }
+
+    return this.every(collection, tester, false);
     // TIP: There's a very clever way to re-use every() here.
+    // 
   };
 
 
@@ -239,11 +250,27 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    var first = obj;
+    for (var i = 1; i < arguments.length; i++) {
+      for (var key in arguments[i]) {
+        obj[key] = arguments[i][key];
+      }
+    }
+    return arguments[0];
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    var first = obj;
+    for (var i = 1; i < arguments.length; i++) {
+      for (var key in arguments[i]) {
+        if (obj[key] === undefined) {
+          obj[key] = arguments[i][key];
+        }
+      }
+    }
+    return arguments[0];
   };
 
 
@@ -296,6 +323,13 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var args = Array.prototype.slice.call(arguments);
+    args = args.slice(2);
+    //var args = arguments.slice(2);
+    var delayed = function() {
+      func.apply(this, args);
+    }
+    setTimeout(delayed, wait);
   };
 
 
